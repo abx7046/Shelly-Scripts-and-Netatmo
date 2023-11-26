@@ -1,7 +1,7 @@
 /// <reference path="../../shelly-script.d.ts" />
 // created from vscode
 
-function fetchAccessToken(result, error_code, error) {
+function getDeviceData(result, error_code, error) {
     if (error_code !== 0) {
       // process error
       print(error_code)
@@ -32,7 +32,7 @@ function fetchAccessToken(result, error_code, error) {
     
   function getValueFromDevice() {
 
-    Shelly.call("HTTP.REQUEST", urlRequest , fetchAccessToken);
+    Shelly.call("HTTP.REQUEST", urlRequest , getDeviceData);
   }
   
   getValueFromDevice();
