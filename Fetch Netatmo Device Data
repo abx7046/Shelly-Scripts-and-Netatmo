@@ -1,0 +1,41 @@
+/// <reference path="../../shelly-script.d.ts" />
+// created from vscode
+
+function fetchAccessToken(result, error_code, error) {
+    if (error_code !== 0) {
+      // process error
+      print(error_code)
+    } else {
+      // process result  
+      let tmp = JSON.parse(result.body)["body"];
+      print(tmp);
+      //print("Access token: ",JSON.parse(result.body)["body"]);
+      //print("Access token: ",JSON.parse(result.body)["time_server"])
+      //print("Access token: ",JSON.parse(result.body)["body"])
+      }
+    }
+
+    let authorizationCode = 'Bearer ' + '...';
+    print(authorizationCode);
+
+    let endDate = 1701005232;
+    let startDate = endDate - 30*60;
+    let netatmoURL = 'https://api.netatmo.com/api/getmeasure?device_id=...&module_id=...&scale=30min&type=temperature&' +
+    'date_begin=' + startDate + '&date_end=' + endDate + '&limit=1&optimize=false&real_time=false'
+
+    let urlRequest = { method: "GET",
+    url: netatmoURL,
+    headers: {
+      accept: 'application/json', 
+      Authorization: authorizationCode}
+  }
+    
+  function getValueFromDevice() {
+
+    Shelly.call("HTTP.REQUEST", urlRequest , fetchAccessToken);
+  }
+  
+  getValueFromDevice();
+  print("Start Script")
+
+  Timer.set(1 * 60 * 1000, true, getValueFromDevice, null);
