@@ -1,0 +1,29 @@
+/// <reference path="../../shelly-script.d.ts" />
+// created from vscode
+
+function fetchAccessToken(result, error_code, error) {
+    if (error_code !== 0) {
+      // process error
+      print(error_code)
+    } else {
+      // process result  
+      print("Access token: ",JSON.parse(result.body)["access_token"])
+      }
+    }
+
+// next to get the access token
+
+
+  function getAccessCode() {
+
+    Shelly.call("HTTP.POST", {
+        url: 'https://api.netatmo.com/oauth2/token',
+        content_type: 'application/x-www-form-urlencoded;charset=UTF-8',
+        body: 'grant_type=refresh_token&refresh_token=[...]&client_id=[...]&client_secret=[...]'
+      }, fetchAccessToken);
+  }
+  
+  getAccessCode();
+  print("Start Script")
+
+  Timer.set(1 * 60 * 1000, true, getAccessCode, null);
